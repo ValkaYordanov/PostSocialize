@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-      <h1>MERN App!</h1>
+      <h1>Post Socialize!</h1>
       <p>Data from server:</p>
       <ul>
         {data.map((item) => {
