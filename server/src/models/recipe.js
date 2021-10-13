@@ -1,15 +1,27 @@
 import mongoose from "mongoose";
 
-const recipeSchema = new mongoose.Schema({
-  title: {
+const postSchema = new mongoose.Schema({
+  content: {
     type: String,
     required: true,
+    maxLength: 500,
   },
-  description: String,
-  ingredients: [String],
-  cookingTime: Number,
+  owner: {
+    type: String,
+  },
+  authorName: {
+    type: String,
+    required: true,
+    maxLength: 100,
+  },
+  likes: Number,
+  comments: [{
+    userName: { type: String, required: true, maxLength: 100 },
+    content: { type: String, required: true, minLength: 2 },
+  }],
+  date: Date
 });
 
-const Recipe = mongoose.model("Recipe", recipeSchema);
+const Post = mongoose.model("Post", postSchema);
 
-export default Recipe;
+export default Post;
