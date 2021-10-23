@@ -1,7 +1,7 @@
 import "./styles.css";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { Router, Link } from "@reach/router";
+import { Router } from "@reach/router";
 import Posts from "./Posts";
 
 import Post from "./Post";
@@ -21,27 +21,32 @@ export default function App() {
 
 
   const getPost = (id) => {
-    return posts.find((post) => post.id === id);
+    return posts.find((post) => post._id === id);
   };
   // You need to implement "function getPost(id)" somewhere else in App.js
 
-  function addPosts(title, content, owner, authorName, likes, comments, date) {
-    if (!title) {
-      document.getElementById("TitleId").innerText = "Title is required";
+  function addPost(content, owner, authorName) {
+    if (!content) {
+      document.getElementById("ContentId").innerText = "Content is required";
       return;
 
     }
-    console.log(title, desc, ingredients)
-    const newRecipe = {
+    if (!authorName) {
+      document.getElementById("AuthorNameId").innerText = "AuthorName is required";
+      return;
+
+    }
+    console.log(content, owner, authorName)
+    const newPost = {
       id: Math.random() * 999,
-      title: title,
-      description: desc,
-      ingredients: ingredients,
-      cookingTime: cookingTime,
-      submitter: submitter
+      content: content,
+      owner: owner,
+      authorName: authorName,
+      likes: 0,
+      date: "date is today",
     };
 
-    fetch(`${API_URL}/create`, {
+    fetch(`${API_URL}/allPosts/create`, {
       // PUT instead of POST because we overwrite the whole bin with a new version
       // https://jsonbin.io/api-reference/v3/bins/update
       method: "PUT",
@@ -49,10 +54,10 @@ export default function App() {
         "Content-Type": "application/json",
       },
       // Simple version where we overwrite the entire "database" store with a new list
-      body: JSON.stringify(newRecipe),
+      body: JSON.stringify(newPost),
     })
       .then((response) => response.json())
-      .then(data => setPosts(data));
+      .then(data => setPosts([...posts, newPost]));
   }
 
 
@@ -60,23 +65,12 @@ export default function App() {
 
   return (
     <>
-      <form className="form-inline">
-        <div className="form-group">
-          <input type="text" onChange={(event) => setNameOfIngre(event.target.value)} className="form-control" />
-
-          <Link to={`/recipes/with/${nameOfIngre}`}>
-            Search
-          </Link>
-        </div>
-      </form>
-
-
 
       <Router>
 
-        <Recipes path="/" data={recipes} addPosts={addPosts}></Recipes>
-        <Recipes path="/recipes/with/:nameOfIngre" data={recipes} addPosts={addPosts} />
-        <Recipe path="/Recipe/:id" getPost={getPost}></Recipe>
+        <Posts path="/" data={posts} addPost={addPost}></Posts>
+
+        <Post path="/Post/:id" getPost={getPost}></Post>
       </Router>
     </>
   );
