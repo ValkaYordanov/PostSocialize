@@ -8,7 +8,7 @@ postRoutes.get("/", async (req, res) => {
   res.json(posts);
 });
 
-postRoutes.post("/create", async (req, res) => {
+postRoutes.put("/create", async (req, res) => {
   try {
     const post = await Post.create(req.body);
     res.status(201);
@@ -21,6 +21,40 @@ postRoutes.post("/create", async (req, res) => {
     });
   }
 });
+
+// postRoutes.route('/addLike/:id').put((req, res, next) => {
+//   try{
+//     const post = await Post.findByIdAndUpdate(req.body.id);
+//     $set:req.body
+//   }
+//   post.findByIdAndUpdate(req.params.id, {
+//     $set: req.body
+//   }, (error, data) => {
+//     if (error) {
+//       return next(error);
+//       console.log(error)
+//     } else {
+//       res.json(data)
+//       console.log('Student updated successfully !')
+//     }
+//   })
+// })
+
+postRoutes.put('/addLikes/:id', (req, res) => {
+
+  Post.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    (err) => {
+      if (err) {
+        res.status(500).end();
+      } else {
+        res.status(200).end();
+      }
+    }
+  );
+});
+
 
 postRoutes.get("/:id", async (req, res) => {
   try {

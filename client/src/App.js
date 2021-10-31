@@ -17,13 +17,12 @@ export default function App() {
       .then((response) => response.json())
       .then((data) => setPosts(data));
   }, []);
-  //var [nameOfIngre, setNameOfIngre] = useState("pasta");
 
 
   const getPost = (id) => {
     return posts.find((post) => post._id === id);
   };
-  // You need to implement "function getPost(id)" somewhere else in App.js
+
 
   function addPost(content, owner, authorName) {
     if (!content) {
@@ -38,12 +37,13 @@ export default function App() {
     }
     console.log(content, owner, authorName)
     const newPost = {
-      id: Math.random() * 999,
+      id: (Math.random() * 999).toString(),
       content: content,
       owner: owner,
       authorName: authorName,
       likes: 0,
-      date: "date is today",
+      comments: [],
+      date: Date.now(),
     };
 
     fetch(`${API_URL}/allPosts/create`, {
@@ -60,17 +60,66 @@ export default function App() {
       .then(data => setPosts([...posts, newPost]));
   }
 
+  function addLike(postId) {
 
+    // const newPost = {
+    //   id: (Math.random() * 999).toString(),
+    //   content: content,
+    //   owner: owner,
+    //   authorName: authorName,
+    //   likes: 0,
+    //   comments: [],
+    //   date: Date.now(),
+    // };
 
+    // fetch(`${API_URL}/allPosts/create`, {
+    //   // PUT instead of POST because we overwrite the whole bin with a new version
+    //   // https://jsonbin.io/api-reference/v3/bins/update
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   // Simple version where we overwrite the entire "database" store with a new list
+    //   body: JSON.stringify(newPost),
+    // })
+    //   .then((response) => response.json())
+    //   .then(data => setPosts([...posts, newPost]));
+  }
+
+  function addComment(content, authorName) {
+
+    // const newPost = {
+    //   id: (Math.random() * 999).toString(),
+    //   content: content,
+    //   owner: owner,
+    //   authorName: authorName,
+    //   likes: 0,
+    //   comments: [],
+    //   date: Date.now(),
+    // };
+
+    // fetch(`${API_URL}/allPosts/create`, {
+    //   // PUT instead of POST because we overwrite the whole bin with a new version
+    //   // https://jsonbin.io/api-reference/v3/bins/update
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   // Simple version where we overwrite the entire "database" store with a new list
+    //   body: JSON.stringify(newPost),
+    // })
+    //   .then((response) => response.json())
+    //   .then(data => setPosts([...posts, newPost]));
+  }
 
   return (
     <>
 
       <Router>
+        <Post path="/Post/:id" getPost={getPost} addLike={addLike} addComment={addComment}></Post>
+        <Posts path="/" data={posts} addPost={addPost} ></Posts>
 
-        <Posts path="/" data={posts} addPost={addPost}></Posts>
 
-        <Post path="/Post/:id" getPost={getPost}></Post>
       </Router>
     </>
   );

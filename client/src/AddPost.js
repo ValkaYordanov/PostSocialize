@@ -22,7 +22,7 @@ function AddPost(props) {
 
     }
     return (
-        clearInput(),
+
         <>
 
             <p>Content:</p>
@@ -38,7 +38,7 @@ function AddPost(props) {
             <button type="button" onClick={(event) => {
 
                 addPost(content, owner, authorName);
-
+                clearInput();
             }}>Add Post </button>
 
 
