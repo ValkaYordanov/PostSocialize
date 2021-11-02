@@ -40,21 +40,37 @@ postRoutes.put("/create", async (req, res) => {
 //   })
 // })
 
-postRoutes.put('/addLikes/:id', (req, res) => {
-
-  Post.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    (err) => {
-      if (err) {
-        res.status(500).end();
-      } else {
-        res.status(200).end();
-      }
-    }
-  );
+postRoutes.put('/addLike/:id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    post.likes++;
+    post.save();
+    res.status(201);
+    res.json(post);
+  } catch (error) {
+    res.status(500);
+    res.json({
+      error: "Post could not be liked",
+      details: error.toString(),
+    });
+  }
 });
 
+postRoutes.put('/addComment/:id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    post.comments = [{ ...post.comments }, [req.body]];
+    post.save();
+    res.status(201);
+    res.json(post);
+  } catch (error) {
+    res.status(500);
+    res.json({
+      error: "Post could not be comment",
+      details: error.toString(),
+    });
+  }
+});
 
 postRoutes.get("/:id", async (req, res) => {
   try {

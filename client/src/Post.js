@@ -4,11 +4,14 @@ import { useState } from "react";
 
 // Nothing special happens in this component, except for the Link
 function Post(props) {
+
     const post = props.getPost(props.id); // "props.id" contains the id in "/recipe/:id"
     const { addLike } = props;
     const { addComment } = props;
     const [content, setContent] = useState("");
-    const [authorName, setAuthorName] = useState("");
+    const [likes, setLikes] = useState(post.likes);
+
+    const [userName, setAuthorName] = useState("");
 
     console.log(post);
     return (
@@ -36,12 +39,25 @@ function Post(props) {
                     <tr>
                         <td>
                             <td>
-                                Likes:{post.likes}
+                                Likes:{likes}
                             </td>
                             <td>
                                 <button type="button" onClick={(event) => {
 
+                                    // fetch(`${API_URL}/allPosts/addLike/${post._id}`, {
+                                    //     // PUT instead of POST because we overwrite the whole bin with a new version
+                                    //     // https://jsonbin.io/api-reference/v3/bins/update
+                                    //     method: "PUT",
+                                    //     //headers: {
+                                    //     // "Content-Type": "application/json",
+                                    //     //},
+                                    //     // Simple version where we overwrite the entire "database" store with a new list
+                                    //     //body: JSON.stringify(data),
+                                    // })
+                                    //     .then((response) => response.json())
+                                    //     .then(data => setLikes(data.likes));
                                     addLike(post._id);
+                                    setLikes(post.likes);
 
                                 }}>Like</button>
                             </td>
@@ -64,7 +80,7 @@ function Post(props) {
 
             <button type="button" onClick={(event) => {
 
-                addComment(content, authorName);
+                addComment(post._id, content, userName);
 
             }}>Add Comment</button>
             <p>
