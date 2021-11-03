@@ -62,7 +62,8 @@ export default function App() {
 
   function addLike(postId) {
     const post = posts.find((post) => post._id === postId);
-    post.likes++;
+    var index = posts.findIndex((post) => post._id === postId);
+    console.log({ ...post, likes: post.likes + 1 });
     fetch(`${API_URL}/allPosts/addLike/${postId}`, {
       // PUT instead of POST because we overwrite the whole bin with a new version
       // https://jsonbin.io/api-reference/v3/bins/update
@@ -71,10 +72,10 @@ export default function App() {
         "Content-Type": "application/json",
       },
       // Simple version where we overwrite the entire "database" store with a new list
-      body: JSON.stringify(post),
+      body: JSON.stringify({ ...post, likes: post.likes + 1 }),
     })
       .then((response) => response.json())
-      .then(data => data.post);
+      .then(data => setPosts([...posts.slice(0, index), data, ...posts.slice(index + 1)]));
   }
 
   async function addComment(postId, comment, user) {

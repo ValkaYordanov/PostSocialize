@@ -5,15 +5,19 @@ import { useState } from "react";
 // Nothing special happens in this component, except for the Link
 function Post(props) {
 
+
     const post = props.getPost(props.id); // "props.id" contains the id in "/recipe/:id"
     const { addLike } = props;
     const { addComment } = props;
     const [content, setContent] = useState("");
-    const [likes, setLikes] = useState(post.likes);
+
 
     const [userName, setAuthorName] = useState("");
 
     console.log(post);
+    if (!post) {
+        return <p>Loading</p>
+    }
     return (
         <div className="background-orange">
             <p>
@@ -39,7 +43,7 @@ function Post(props) {
                     <tr>
                         <td>
                             <td>
-                                Likes:{likes}
+                                Likes:{post.likes}
                             </td>
                             <td>
                                 <button type="button" onClick={(event) => {
@@ -57,7 +61,7 @@ function Post(props) {
                                     //     .then((response) => response.json())
                                     //     .then(data => setLikes(data.likes));
                                     addLike(post._id);
-                                    setLikes(post.likes);
+
 
                                 }}>Like</button>
                             </td>
