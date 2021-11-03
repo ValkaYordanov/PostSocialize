@@ -17,7 +17,7 @@ const postSchema = new mongoose.Schema({
   likes: Number,
   comments: [{
     userName: { type: String, required: true, maxLength: 100 },
-    content: { type: String, required: true, minLength: 2 },
+    content: { type: String, required: true, minLength: 2 }
   }],
   date: Date
 });

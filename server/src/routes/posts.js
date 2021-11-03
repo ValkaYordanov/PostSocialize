@@ -58,9 +58,17 @@ postRoutes.put('/addLike/:id', async (req, res) => {
 
 postRoutes.put('/addComment/:id', async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
-    post.comments = [{ ...post.comments }, [req.body]];
-    post.save();
+    const post = await Post.findByIdAndUpdate({ _id: req.params.id },
+      {
+        $push: { comments: req.body }
+      },
+      {
+        retunDocument: 'after'
+      }
+
+    );
+    // post.comments = [{ ...post.comments }, [req.body]];
+    // post.save();
     res.status(201);
     res.json(post);
   } catch (error) {
