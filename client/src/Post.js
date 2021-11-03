@@ -9,21 +9,19 @@ function Post(props) {
     const post = props.getPost(props.id); // "props.id" contains the id in "/recipe/:id"
     const { addLike } = props;
     const { addComment } = props;
-    const [content, setContent] = useState("");
-
-
-    const [userName, setAuthorName] = useState("");
+    const [comment, setComment] = useState("");
+    const [user, setUser] = useState("");
 
     console.log(post);
     if (!post) {
         return <p>Loading</p>
     }
     return (
-        <div className="background-orange">
+        <div className="background-orange" >
             <p>
-                <table>
+                <table style={{ background: 'green', margin: '0 auto' }}>
                     <tr>
-                        <td>Date:
+                        <td >Date:
                             {new Intl.DateTimeFormat('en-GB', {
                                 month: 'long',
                                 day: '2-digit',
@@ -74,17 +72,17 @@ function Post(props) {
                     </tr>
                 </table>
             </p>
-            <p>Content:</p>
-            <input onChange={(event) => setContent(event.target.value)} type="text" />
-            <div id="ContentId" />
+            <p style={{ margin: '0 auto' }}>Content:</p>
+            <input style={{ margin: '0 auto' }} onChange={(event) => setComment(event.target.value)} type="text" />
+            <div style={{ margin: '0 auto' }} id="CommentId" />
 
-            <p>Author name:</p>
-            <input onChange={(event) => setAuthorName(event.target.value)} type="text" />
-            <div id="AuthorNameId" />
+            <p style={{ margin: '0 auto' }}>Author name:</p>
+            <input style={{ margin: '0 auto' }} onChange={(event) => setUser(event.target.value)} type="text" />
+            <div style={{ margin: '0 auto' }} id="UserId" />
 
-            <button type="button" onClick={(event) => {
-
-                addComment(post._id, content, userName);
+            <button style={{ margin: '0 auto' }} type="button" onClick={(event) => {
+                console.log(comment, user)
+                addComment(post._id, comment, user);
 
             }}>Add Comment</button>
             <p>

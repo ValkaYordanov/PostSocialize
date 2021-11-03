@@ -80,11 +80,11 @@ export default function App() {
 
   async function addComment(postId, comment, user) {
 
-    const post = await posts.find((post) => post._id === postId);
-
+    //const post = posts.find((post) => post._id === postId);
+    //var index = posts.findIndex((post) => post._id === postId);
     //var newComment = { _id: (Math.random() * 999).toString(), userName, content };
     var newComment = { userName: user, content: comment };
-    console.log(post.comments)
+
     fetch(`${API_URL}/allPosts/addComment/${postId}`, {
       // PUT instead of POST because we overwrite the whole bin with a new version
       // https://jsonbin.io/api-reference/v3/bins/update
@@ -93,11 +93,15 @@ export default function App() {
         "Content-Type": "application/json",
       },
       // Simple version where we overwrite the entire "database" store with a new list
-      body: JSON.stringify(newComment),
+      //body: JSON.stringify({ ...post, comments: [...post.comments, newComment] }),
+      body: JSON.stringify(newComment)
     })
-    await fetch(`${API_URL}/allPosts`)
+    fetch(`${API_URL}/allPosts`)
       .then((response) => response.json())
       .then((data) => setPosts(data));
+    // .then((response) => response.json())
+    // .then((data) => setPosts([...posts.slice(0, index), data, ...posts.slice(index + 1)]));
+
   }
 
   return (
