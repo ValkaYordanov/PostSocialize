@@ -24,7 +24,7 @@ export default function App() {
   };
 
 
-  function addPost(content, owner, authorName) {
+  async function addPost(content, owner, authorName) {
     if (!content) {
       document.getElementById("ContentId").innerText = "Content is required";
       return;
@@ -56,8 +56,9 @@ export default function App() {
       // Simple version where we overwrite the entire "database" store with a new list
       body: JSON.stringify(newPost),
     })
+    fetch(`${API_URL}/allPosts`)
       .then((response) => response.json())
-      .then(data => setPosts([...posts, newPost]));
+      .then((data) => setPosts(data));
   }
 
   function addLike(postId) {

@@ -20,25 +20,29 @@ function AddPost(props) {
         setOwner("");
         setAuthorName("");
 
+
     }
     return (
 
         <>
 
             <p>Content:</p>
-            <input onChange={(event) => setContent(event.target.value)} type="text" />
+            <input id="contentID" onChange={(event) => setContent(event.target.value)} type="text" />
             <div id="ContentId" />
             <p>Owner:</p>
-            <input onChange={(event) => setOwner(event.target.value)} type="text" />
+            <input id="ownerID" onChange={(event) => setOwner(event.target.value)} type="text" />
             <div id="OwnerId" />
             <p>Author name:</p>
-            <input onChange={(event) => setAuthorName(event.target.value)} type="text" />
+            <input id="usernameID" onChange={(event) => setAuthorName(event.target.value)} type="text" />
             <div id="AuthorNameId" />
 
             <button type="button" onClick={(event) => {
 
                 addPost(content, owner, authorName);
                 clearInput();
+                document.getElementById('contentID').value = null;
+                document.getElementById('ownerID').value = null;
+                document.getElementById('usernameID').value = null;
             }}>Add Post </button>
 
 

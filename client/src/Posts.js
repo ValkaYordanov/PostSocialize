@@ -17,7 +17,7 @@ function Posts(props) {
         <div className="background-orange">
 
             <br />
-            <Link to="/">Go back</Link>
+
             <AddPost addPost={addPost} />
 
             <h1>list of post</h1>
