@@ -14,48 +14,39 @@ function Posts(props) {
 
     console.log(data)
     return (
-        <div className="background-orange">
-
+        <>
             <br />
-
             <AddPost addPost={addPost} />
+            <h1 style={{ textAlign: 'center' }}>List of all posts</h1>
+            <div style={{ width: '300px', border: 'solid', margin: '0 auto', textAlign: 'center' }}>
 
-            <h1>list of post</h1>
-
-            {data.map(post =>
-                <p>
-                    <table>
-                        <tr>
-                            <th>
+                <div>
+                    {data.map(post =>
+                        <>
+                            <div>
                                 <Link to={`/Post/${post._id}`}>Post by {post.authorName}</Link>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>
+                            </div>
+                            <hr />
+                            <div>
                                 {readMore(post.content)}...
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <td>
-                                    Likes:{post.likes}
-                                </td>
-                                <td>
-                                    Comments: {(post.comments).length}
-                                </td>
-                            </td>
-                        </tr>
-                    </table>
-                </p>
+                            </div>
+                            <hr />
+                            <div>
+                                Likes:{post.likes} &nbsp; &nbsp; Comments: {(post.comments).length}
+                            </div>
+                            <hr style={{ height: '2px', backgroundColor: 'blue' }} />
+                        </>
 
-            )
-            }
+
+
+                    )}
+                </div>
 
 
 
 
 
-        </div >
+            </div></>
 
     );
 }

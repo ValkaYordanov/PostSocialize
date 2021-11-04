@@ -6,3 +6,16 @@ table, th, td {
   border:1px solid black;
   width: 20%;
 }
+
+.wrapContent{
+  margin: 0 auto;
+  text-align: left;
+  width: 650px;
+  word-wrap: break-word;
+}
+
+.wrapContentPost{
+  text-align: right;
+  width: 600px;
+  word-wrap: break-word;
+}

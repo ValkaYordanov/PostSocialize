@@ -25,27 +25,42 @@ function AddPost(props) {
     return (
 
         <>
+            <div style={{ border: 'solid', width: '500px', margin: '0 auto', textAlign: 'center' }}>
+                <div>
+                    <p>Content:</p>
+                    <textarea style={{ margin: '0 auto', width: '300px', height: '50px' }} id="contentID" onChange={(event) => setContent(event.target.value)} type="text" />
+                    <div id="ContentId" />
+                </div>
+                <hr />
+                <div>
+                    <p>Owner:</p>
+                    <input id="ownerID" onChange={(event) => setOwner(event.target.value)} type="text" />
+                    <div id="OwnerId" />
+                </div>
+                <hr />
+                <div>
+                    <p>Author name:</p>
+                    <input id="usernameID" onChange={(event) => setAuthorName(event.target.value)} type="text" />
+                    <div id="AuthorNameId" />
+                </div>
+                <hr />
+                <div>
+                    <button style={{ backgroundColor: 'green' }} type="button" onClick={(event) => {
 
-            <p>Content:</p>
-            <input id="contentID" onChange={(event) => setContent(event.target.value)} type="text" />
-            <div id="ContentId" />
-            <p>Owner:</p>
-            <input id="ownerID" onChange={(event) => setOwner(event.target.value)} type="text" />
-            <div id="OwnerId" />
-            <p>Author name:</p>
-            <input id="usernameID" onChange={(event) => setAuthorName(event.target.value)} type="text" />
-            <div id="AuthorNameId" />
-
-            <button type="button" onClick={(event) => {
-
-                addPost(content, owner, authorName);
-                clearInput();
-                document.getElementById('contentID').value = null;
-                document.getElementById('ownerID').value = null;
-                document.getElementById('usernameID').value = null;
-            }}>Add Post </button>
+                        addPost(content, owner, authorName);
+                        clearInput();
+                        document.getElementById('contentID').value = null;
+                        document.getElementById('ownerID').value = null;
+                        document.getElementById('usernameID').value = null;
+                    }}>Add Post </button>
+                </div>
 
 
+
+
+
+
+            </div>
         </>
     );
 }

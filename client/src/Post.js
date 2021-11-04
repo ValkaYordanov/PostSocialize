@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "@reach/router";
 import { useState } from "react";
+import "./styles.css";
 
 // Nothing special happens in this component, except for the Link
 function Post(props) {
@@ -18,92 +19,80 @@ function Post(props) {
     }
     return (
         <div className="background-orange" >
-            <p>
-                <table style={{ background: 'green', margin: '0 auto' }}>
-                    <tr>
-                        <td >Date:
-                            {new Intl.DateTimeFormat('en-GB', {
-                                month: 'long',
-                                day: '2-digit',
-                                year: 'numeric',
-                            }).format(new Date(post.date))}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{post.content}</td>
-                    </tr>
-                    <tr>
-                        <td>Owner of the quote: {post.owner}</td>
-                    </tr>
-                    <tr>
-                        <td>Author Name: {post.authorName}</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <td>
-                                Likes:{post.likes}
-                            </td>
-                            <td>
-                                <button type="button" onClick={(event) => {
 
-                                    // fetch(`${API_URL}/allPosts/addLike/${post._id}`, {
-                                    //     // PUT instead of POST because we overwrite the whole bin with a new version
-                                    //     // https://jsonbin.io/api-reference/v3/bins/update
-                                    //     method: "PUT",
-                                    //     //headers: {
-                                    //     // "Content-Type": "application/json",
-                                    //     //},
-                                    //     // Simple version where we overwrite the entire "database" store with a new list
-                                    //     //body: JSON.stringify(data),
-                                    // })
-                                    //     .then((response) => response.json())
-                                    //     .then(data => setLikes(data.likes));
-                                    addLike(post._id);
+            <div style={{ border: 'solid', background: 'yellow', margin: '0 auto', width: '1000px' }}>
+                <div style={{ textAlign: 'center', margin: '0 auto' }}>
+                    <font size="+1"><strong>Date:</strong></font>&nbsp;&nbsp;
+                    {new Intl.DateTimeFormat('en-GB', {
+                        month: 'long',
+                        day: '2-digit',
+                        year: 'numeric',
+                    }).format(new Date(post.date))}
+                </div>
+                <hr />
+                <div style={{ textAlign: 'center', margin: '0 auto' }} className="wrapContentPost" >
+                    {post.content}
+                </div>
+                <hr />
+                <div style={{ textAlign: 'center', margin: '0 auto' }} className="wrapContentPost" >
+                    <font size="+1"><strong>Owner of the quote:</strong></font>&nbsp;&nbsp; {post.owner}
+                </div>
+                <hr />
+                <div style={{ textAlign: 'center', margin: '0 auto' }} className="wrapContentPost" >
+                    <font size="+1"><strong>Author Name: </strong></font>&nbsp;&nbsp; {post.authorName}
+                </div>
+                <hr />
+                <div style={{ textAlign: 'center', margin: '0 auto' }} className="wrapContentPost" >
+                    <font size="+1"><strong>Likes:</strong></font>&nbsp;&nbsp;{post.likes}
+                    &nbsp;
+                    <button type="button" onClick={(event) => {
+                        addLike(post._id);
+                    }}>Like</button>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    <font size="+1"><strong>Comments:</strong></font>&nbsp;&nbsp; {(post.comments).length}
+                </div>
+            </div>
+            <br />
+            <div style={{ border: 'solid', width: '700px', margin: '0 auto', alignContent: 'center' }}>
+                <div>
+                    <p style={{ margin: '0 auto' }}>Content:</p>
+                    <textarea maxlength="500" id="commentId" style={{ margin: '0 auto', width: '400px', height: '80px' }} onChange={(event) => setComment(event.target.value)} type="text" />
+                    <div style={{ margin: '0 auto' }} id="CommentId" />
+
+                    <p style={{ margin: '0 auto' }}>Author name:</p>
+                    <input id="authorNameId" style={{ margin: '0 auto', width: '250px' }} onChange={(event) => setUser(event.target.value)} type="text" />
+                    <div style={{ margin: '0 auto' }} id="UserId" />
+
+                    <button style={{ margin: '0 auto' }} type="button" onClick={(event) => {
+                        console.log(comment, user)
+                        addComment(post._id, comment, user);
+                        document.getElementById('commentId').value = null;
+                        document.getElementById('authorNameId').value = null;
+                    }}>Add Comment</button>
+                </div>
+                <hr />
+                <div style={{ textAlign: 'center' }} >
+                    <h1>All Comments</h1>
+                    <hr />
+                    <div style={{}}>
+                        {(post.comments).map(comment =>
+                            <>
+                                <h3 style={{ textAlign: 'left', height: '5px' }}>{comment.userName}</h3>
+                                <p className="wrapContent"> {comment.content}</p>
+                                <hr />
+                            </>
+                        )
+                        }
+                    </div>
+                </div>
 
 
-                                }}>Like</button>
-                            </td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Comments: {(post.comments).length}
-                        </td>
-                    </tr>
-                </table>
-            </p>
-            <p style={{ margin: '0 auto' }}>Content:</p>
-            <input style={{ margin: '0 auto' }} onChange={(event) => setComment(event.target.value)} type="text" />
-            <div style={{ margin: '0 auto' }} id="CommentId" />
 
-            <p style={{ margin: '0 auto' }}>Author name:</p>
-            <input style={{ margin: '0 auto' }} onChange={(event) => setUser(event.target.value)} type="text" />
-            <div style={{ margin: '0 auto' }} id="UserId" />
 
-            <button style={{ margin: '0 auto' }} type="button" onClick={(event) => {
-                console.log(comment, user)
-                addComment(post._id, comment, user);
+            </div>
+            <div style={{ border: 'solid', width: '90px' }}> <Link to="/"> Go to home</Link></div>
 
-            }}>Add Comment</button>
-            <p>
-                <table>
-                    <tr>
-                        <th>All Comments</th>
-                    </tr>
-                    {(post.comments).map(comment =>
-                        <>
-                            <tr>
-                                <td>{comment.userName}: {comment.content}</td>
-                            </tr>
-
-                        </>
-
-                    )
-                    }
-                </table>
-            </p>
-            <Link to="/"> Go to home</Link>
-        </div>
+        </div >
     );
 }
 

@@ -80,7 +80,16 @@ export default function App() {
   }
 
   async function addComment(postId, comment, user) {
+    if (!comment) {
+      document.getElementById("CommentId").innerText = "Comment is required";
+      return;
 
+    }
+    if (!user) {
+      document.getElementById("UserId").innerText = "User is required";
+      return;
+
+    }
     //const post = posts.find((post) => post._id === postId);
     //var index = posts.findIndex((post) => post._id === postId);
     //var newComment = { _id: (Math.random() * 999).toString(), userName, content };
