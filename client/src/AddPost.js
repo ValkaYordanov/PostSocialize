@@ -44,8 +44,8 @@ function AddPost(props) {
                     <div id="AuthorNameId" />
                 </div>
                 <hr />
-                <div>
-                    <button style={{ backgroundColor: 'green' }} type="button" onClick={(event) => {
+                <div >
+                    <button style={{ backgroundColor: 'green', height: '25px' }} type="button" onClick={(event) => {
 
                         addPost(content, owner, authorName);
                         clearInput();
