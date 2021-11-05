@@ -10,12 +10,12 @@ table, th, td {
 .wrapContent{
   margin: 0 auto;
   text-align: left;
-  width: 650px;
+  width: 90%;
   word-wrap: break-word;
 }
 
 .wrapContentPost{
   text-align: right;
-  width: 600px;
+  width: 90%;
   word-wrap: break-word;
 }

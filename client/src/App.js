@@ -79,39 +79,37 @@ export default function App() {
       .then(data => setPosts([...posts.slice(0, index), data, ...posts.slice(index + 1)]));
   }
 
-  async function addComment(postId, comment, user) {
-    if (!comment) {
-      document.getElementById("CommentId").innerText = "Comment is required";
-      return;
+  async function addComment(postId, comment, user, setErrorMessage) {
+    if (user != "" && comment != "" && comment.length >= 2) {
+      setErrorMessage("")
 
+
+      const post = posts.find((post) => post._id === postId);
+      //var index = posts.findIndex((post) => post._id === postId);
+      //var newComment = { _id: (Math.random() * 999).toString(), userName, content };
+      const newComment = { userName: user, content: comment };
+
+      fetch(`${API_URL}/allPosts/addComment/${postId}`, {
+        // PUT instead of POST because we overwrite the whole bin with a new version
+        // https://jsonbin.io/api-reference/v3/bins/update
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // Simple version where we overwrite the entire "database" store with a new list
+        //body: JSON.stringify({ ...post, comments: [...post.comments, newComment] }),
+        body: JSON.stringify(newComment)
+      })
+      fetch(`${API_URL}/allPosts`)
+        .then((response) => response.json())
+        .then((data) => setPosts(data));
+      // .then(response => response.json())
+      // .then(data => setPosts([...posts.slice(0, index), data, ...posts.slice(index + 1)]))
+      // .catch(error => console.error(error))
     }
-    if (!user) {
-      document.getElementById("UserId").innerText = "User is required";
-      return;
-
+    else {
+      setErrorMessage("Try again please!")
     }
-    //const post = posts.find((post) => post._id === postId);
-    //var index = posts.findIndex((post) => post._id === postId);
-    //var newComment = { _id: (Math.random() * 999).toString(), userName, content };
-    var newComment = { userName: user, content: comment };
-
-    fetch(`${API_URL}/allPosts/addComment/${postId}`, {
-      // PUT instead of POST because we overwrite the whole bin with a new version
-      // https://jsonbin.io/api-reference/v3/bins/update
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // Simple version where we overwrite the entire "database" store with a new list
-      //body: JSON.stringify({ ...post, comments: [...post.comments, newComment] }),
-      body: JSON.stringify(newComment)
-    })
-    fetch(`${API_URL}/allPosts`)
-      .then((response) => response.json())
-      .then((data) => setPosts(data));
-    // .then((response) => response.json())
-    // .then((data) => setPosts([...posts.slice(0, index), data, ...posts.slice(index + 1)]));
-
   }
 
   return (

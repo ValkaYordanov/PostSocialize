@@ -13,6 +13,14 @@ function Post(props) {
     const [comment, setComment] = useState("");
     const [user, setUser] = useState("");
 
+    const [errorMessage, setErrorMessage] = useState("");
+
+    function clearInput() {
+        setComment("");
+        setUser("");
+
+    }
+
     console.log(post);
     if (!post) {
         return <p>Loading</p>
@@ -20,7 +28,7 @@ function Post(props) {
     return (
         <div className="background-orange" >
 
-            <div style={{ border: 'solid', background: 'yellow', margin: '0 auto', width: '1000px' }}>
+            <div style={{ border: 'solid', background: 'yellow', margin: '0 auto', width: '80%', padding: '1em' }}>
                 <div style={{ textAlign: 'center', margin: '0 auto' }}>
                     <font size="+1"><strong>Date:</strong></font>&nbsp;&nbsp;
                     {new Intl.DateTimeFormat('en-GB', {
@@ -53,10 +61,11 @@ function Post(props) {
                 </div>
             </div>
             <br />
-            <div style={{ border: 'solid', width: '700px', margin: '0 auto', alignContent: 'center' }}>
+            <div style={{ border: 'solid', width: '50%', margin: '0 auto', alignContent: 'center', padding: '1em' }}>
                 <div>
+                    {errorMessage && (<p>{errorMessage}</p>)}
                     <p style={{ margin: '0 auto' }}>Content:</p>
-                    <textarea maxlength="500" id="commentId" style={{ margin: '0 auto', width: '400px', height: '80px' }} onChange={(event) => setComment(event.target.value)} type="text" />
+                    <textarea minLength="2" id="commentId" style={{ margin: '0 auto', width: '400px', height: '80px' }} onChange={(event) => setComment(event.target.value)} type="text" />
                     <div style={{ margin: '0 auto' }} id="CommentId" />
 
                     <p style={{ margin: '0 auto' }}>Author name:</p>
@@ -65,7 +74,8 @@ function Post(props) {
 
                     <button style={{ margin: '0 auto' }} type="button" onClick={(event) => {
                         console.log(comment, user)
-                        addComment(post._id, comment, user);
+                        addComment(post._id, comment, user, setErrorMessage);
+                        clearInput();
                         document.getElementById('commentId').value = null;
                         document.getElementById('authorNameId').value = null;
                     }}>Add Comment</button>

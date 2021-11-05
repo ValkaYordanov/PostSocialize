@@ -28,7 +28,7 @@ function AddPost(props) {
             <div style={{ border: 'solid', width: '500px', margin: '0 auto', textAlign: 'center' }}>
                 <div>
                     <p>Content:</p>
-                    <textarea style={{ margin: '0 auto', width: '300px', height: '50px' }} id="contentID" onChange={(event) => setContent(event.target.value)} type="text" />
+                    <textarea maxLength='500' style={{ margin: '0 auto', width: '300px', height: '50px' }} id="contentID" onChange={(event) => setContent(event.target.value)} type="text" />
                     <div id="ContentId" />
                 </div>
                 <hr />
