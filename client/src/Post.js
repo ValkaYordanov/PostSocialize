@@ -23,7 +23,7 @@ function Post(props) {
 
     console.log(post);
     if (!post) {
-        return <p>Loading</p>
+        return <p>Loading...</p>
     }
     return (
         <div className="background-orange" >
@@ -65,7 +65,7 @@ function Post(props) {
                 <div>
                     {errorMessage && (<p>{errorMessage}</p>)}
                     <p style={{ margin: '0 auto' }}>Content:</p>
-                    <textarea minLength="2" id="commentId" style={{ margin: '0 auto', width: '400px', height: '80px' }} onChange={(event) => setComment(event.target.value)} type="text" />
+                    <textarea id="commentId" style={{ margin: '0 auto', width: '400px', height: '80px' }} onChange={(event) => setComment(event.target.value)} type="text" />
                     <div style={{ margin: '0 auto' }} id="CommentId" />
 
                     <p style={{ margin: '0 auto' }}>Author name:</p>
@@ -80,10 +80,10 @@ function Post(props) {
                         document.getElementById('authorNameId').value = null;
                     }}>Add Comment</button>
                 </div>
-                <hr />
+                <hr style={{ height: '2px', backgroundColor: 'blue' }} />
                 <div style={{ textAlign: 'center' }} >
                     <h1>All Comments</h1>
-                    <hr />
+                    <hr style={{ height: '2px', backgroundColor: 'blue' }} />
                     <div style={{}}>
                         {(post.comments).map(comment =>
                             <>

@@ -12,7 +12,7 @@ function AddPost(props) {
     const [content, setContent] = useState("");
     const [owner, setOwner] = useState("")
     const [authorName, setAuthorName] = useState("");
-
+    const [errorMessage, setErrorMessage] = useState("");
     const { addPost } = props;
 
     function clearInput() {
@@ -25,7 +25,8 @@ function AddPost(props) {
     return (
 
         <>
-            <div style={{ border: 'solid', width: '500px', margin: '0 auto', textAlign: 'center' }}>
+            <div style={{ border: 'solid', width: '500px', margin: '0 auto', textAlign: 'center', padding: '1em' }}>
+                {errorMessage && (<p>{errorMessage}</p>)}
                 <div>
                     <p>Content:</p>
                     <textarea maxLength='500' style={{ margin: '0 auto', width: '300px', height: '50px' }} id="contentID" onChange={(event) => setContent(event.target.value)} type="text" />
@@ -47,7 +48,7 @@ function AddPost(props) {
                 <div >
                     <button style={{ backgroundColor: 'green', height: '25px' }} type="button" onClick={(event) => {
 
-                        addPost(content, owner, authorName);
+                        addPost(content, owner, authorName, setErrorMessage);
                         clearInput();
                         document.getElementById('contentID').value = null;
                         document.getElementById('ownerID').value = null;

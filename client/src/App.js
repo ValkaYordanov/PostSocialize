@@ -24,41 +24,49 @@ export default function App() {
   };
 
 
-  async function addPost(content, owner, authorName) {
-    if (!content) {
-      document.getElementById("ContentId").innerText = "Content is required";
-      return;
+  async function addPost(content, owner, authorName, setErrorMessage) {
+    // if (!content) {
+    //   document.getElementById("ContentId").innerText = "Content is required";
+    //   return;
 
+    // }
+    // if (!authorName) {
+    //   document.getElementById("AuthorNameId").innerText = "AuthorName is required";
+    //   return;
+
+    // }
+
+    if (content != "" && authorName != "" && content.length <= 500) {
+      setErrorMessage("")
+
+      console.log(content, owner, authorName)
+      const newPost = {
+        id: (Math.random() * 999).toString(),
+        content: content,
+        owner: owner,
+        authorName: authorName,
+        likes: 0,
+        comments: [],
+        date: Date.now(),
+      };
+
+      fetch(`${API_URL}/allPosts/create`, {
+        // PUT instead of POST because we overwrite the whole bin with a new version
+        // https://jsonbin.io/api-reference/v3/bins/update
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // Simple version where we overwrite the entire "database" store with a new list
+        body: JSON.stringify(newPost),
+      })
+      fetch(`${API_URL}/allPosts`)
+        .then((response) => response.json())
+        .then((data) => setPosts(data));
     }
-    if (!authorName) {
-      document.getElementById("AuthorNameId").innerText = "AuthorName is required";
-      return;
-
+    else {
+      setErrorMessage("The content and the Author Name are required! The content needs to be less than 500 characters!")
     }
-    console.log(content, owner, authorName)
-    const newPost = {
-      id: (Math.random() * 999).toString(),
-      content: content,
-      owner: owner,
-      authorName: authorName,
-      likes: 0,
-      comments: [],
-      date: Date.now(),
-    };
-
-    fetch(`${API_URL}/allPosts/create`, {
-      // PUT instead of POST because we overwrite the whole bin with a new version
-      // https://jsonbin.io/api-reference/v3/bins/update
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // Simple version where we overwrite the entire "database" store with a new list
-      body: JSON.stringify(newPost),
-    })
-    fetch(`${API_URL}/allPosts`)
-      .then((response) => response.json())
-      .then((data) => setPosts(data));
   }
 
   function addLike(postId) {
@@ -108,7 +116,7 @@ export default function App() {
       // .catch(error => console.error(error))
     }
     else {
-      setErrorMessage("Try again please!")
+      setErrorMessage("The Content and the Author name are required! The content needs to be at least 2 characters!")
     }
   }
 
