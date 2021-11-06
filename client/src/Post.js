@@ -100,7 +100,7 @@ function Post(props) {
 
 
             </div>
-            <div style={{ border: 'solid', width: '90px' }}> <Link to="/"> Go to home</Link></div>
+            <div style={{ border: 'solid', width: '6%' }}> <Link to="/"> Go to home</Link></div>
 
         </div >
     );
