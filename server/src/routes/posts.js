@@ -56,6 +56,9 @@ postRoutes.put('/addLike/:id', async (req, res) => {
   }
 });
 
+//lifting state up to the parrent for adding comment and update the page
+
+
 postRoutes.put('/addComment/:id', async (req, res) => {
   try {
     const post = await Post.findByIdAndUpdate({ _id: req.params.id },
