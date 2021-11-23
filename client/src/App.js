@@ -5,38 +5,66 @@ import { Router } from "@reach/router";
 import Posts from "./Posts";
 
 import Post from "./Post";
+import apiService from "./apiService";
 
+import Login from "./Login";
+import Logout from "./Logout";
 
 const API_URL = process.env.REACT_APP_API;
 export default function App() {
   const [posts, setPosts] = useState([
   ]);
 
-  useEffect(() => {
-    fetch(`${API_URL}/allPosts`)
-      .then((response) => response.json())
-      .then((data) => setPosts(data));
-  }, []);
+  // useEffect(() => {
+  //   fetch(`${API_URL}/allPosts`)
+  //     .then((response) => response.json())
+  //     .then((data) => setPosts(data));
+  // }, []);
 
+  async function getData() {
+    // We now use `apiService.get()` instead of `fetch()`
+    try {
+      const data = await apiService.get("/allPosts");
+      setPosts(data);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  // Getting data from API
+  useEffect(() => {
+    getData();
+  }, []);
 
   const getPost = (id) => {
     return posts.find((post) => post._id === id);
   };
 
+  function logout() {
+    try {
+      apiService.logout();
+      // Fetch data again after logging in
+      window.location.reload();
+    } catch (error) {
+      console.error("Logout", error);
+    }
+  }
 
+
+  // Login using API
+  async function login(username, password) {
+    try {
+      await apiService.login(username, password);
+      // Fetch data again after logging in
+      getData();
+      window.location.reload();
+    } catch (error) {
+      console.error("Login", error);
+    }
+  }
   async function addPost(content, owner, authorName, setErrorMessage) {
-    // if (!content) {
-    //   document.getElementById("ContentId").innerText = "Content is required";
-    //   return;
 
-    // }
-    // if (!authorName) {
-    //   document.getElementById("AuthorNameId").innerText = "AuthorName is required";
-    //   return;
-
-    // }
-
-    if (content != "" && authorName != "" && content.length <= 500) {
+    if (content !== "" && authorName !== "" && content.length <= 500) {
       setErrorMessage("")
 
       console.log(content, owner, authorName)
@@ -88,11 +116,11 @@ export default function App() {
   }
 
   async function addComment(postId, comment, user, setErrorMessage) {
-    if (user != "" && comment != "" && comment.length >= 2) {
+    if (user !== "" && comment !== "" && comment.length >= 2) {
       setErrorMessage("")
 
 
-      const post = posts.find((post) => post._id === postId);
+      //const post = posts.find((post) => post._id === postId);
       //var index = posts.findIndex((post) => post._id === postId);
       //var newComment = { _id: (Math.random() * 999).toString(), userName, content };
       const newComment = { userName: user, content: comment };
@@ -119,16 +147,27 @@ export default function App() {
       setErrorMessage("The Content and the Author name are required! The content needs to be at least 2 characters!")
     }
   }
-
-  return (
-    <>
-
+  let contents = <p>No kittens!</p>;
+  if (posts.length > 0) {
+    contents = (
       <Router>
         <Post path="/Post/:id" getPost={getPost} addLike={addLike} addComment={addComment}></Post>
         <Posts path="/" data={posts} addPost={addPost} ></Posts>
 
 
       </Router>
+    );
+  }
+  let loginPart = <Login login={login}></Login>;
+  if (apiService.loggedIn()) {
+    loginPart = <Logout logout={logout}></Logout>;
+
+  }
+  return (
+    <>
+      {contents}
+      {loginPart}
+
     </>
   );
 }
