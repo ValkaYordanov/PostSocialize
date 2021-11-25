@@ -8,7 +8,7 @@ postRoutes.get("/", async (req, res) => {
   res.json(posts);
 });
 
-postRoutes.put("/create", async (req, res) => {
+postRoutes.post("/create", async (req, res) => {
   try {
     const post = await Post.create(req.body);
     res.status(201);

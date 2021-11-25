@@ -67,7 +67,7 @@ export default function App() {
     if (content !== "" && authorName !== "" && content.length <= 500) {
       setErrorMessage("")
 
-      console.log(content, owner, authorName)
+      // console.log(content, owner, authorName)
       const newPost = {
         id: (Math.random() * 999).toString(),
         content: content,
@@ -78,19 +78,21 @@ export default function App() {
         date: Date.now(),
       };
 
-      fetch(`${API_URL}/allPosts/create`, {
+      console.log(newPost);
+      const resPost = await apiService.post(`/allPosts/create`,
         // PUT instead of POST because we overwrite the whole bin with a new version
         // https://jsonbin.io/api-reference/v3/bins/update
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        // method: "POST",
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
         // Simple version where we overwrite the entire "database" store with a new list
-        body: JSON.stringify(newPost),
-      })
-      fetch(`${API_URL}/allPosts`)
-        .then((response) => response.json())
-        .then((data) => setPosts(data));
+        newPost,
+      )
+      //   fetch(`${API_URL}/allPosts`)
+      //     .then((response) => response.json())
+      //     .then((data) => setPosts(data));
+      setPosts([...posts, resPost]);
     }
     else {
       setErrorMessage("The content and the Author Name are required! The content needs to be less than 500 characters!")
@@ -165,8 +167,9 @@ export default function App() {
   }
   return (
     <>
-      {contents}
       {loginPart}
+      {contents}
+
 
     </>
   );

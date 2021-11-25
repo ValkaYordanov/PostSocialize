@@ -23,7 +23,7 @@ function createServer() {
   /* The express.urlencoded() middleware automatically parses urlencoded payloads
    * into the req.body property:
    * http://expressjs.com/en/api.html#express.urlencoded */
-  app.use(express.urlencoded({ extended: false }));
+  //app.use(express.urlencoded({ extended: false }));
 
   /* The morgan() middleware logs request info to the console while the server is
    * running: https://expressjs.com/en/resources/middleware/morgan.html */
@@ -33,7 +33,7 @@ function createServer() {
 
   /* The express.static() middleware serves our static files from the pre-built
    * React app: http://expressjs.com/en/api.html#express.static */
-  app.use(express.static(path.resolve("..", "client", "build")));
+  //app.use(express.static(path.resolve("..", "client", "build")));
 
   /* We add our own routes as middleware on the `/api` path */
 
@@ -41,9 +41,9 @@ function createServer() {
   /* "Redirect" all non-API GET requests to React's entry point (index.html)
    * which allows the React SPA's client side navigation library to handle full
    * page refreshes */
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve("..", "client", "public", "index.html"))
-  );
+  // app.get("*", (req, res) =>
+  //   res.sendFile(path.resolve("..", "client", "public", "index.html"))
+  // );
 
   const openPaths = [
     // Open "/api/users/authenticate" for POST requests

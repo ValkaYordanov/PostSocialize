@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Post from "./models/post.js";
+import USer from "./models/user.js";
 
 async function connectDatabase() {
   const connectionString = process.env.MONGODB_URL;

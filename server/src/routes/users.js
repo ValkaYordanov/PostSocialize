@@ -1,6 +1,7 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import User from "../models/user.js";
 
 // I recommend that you store your users in MongoDB using Mongoose instead of this.
 const users = [
@@ -32,10 +33,20 @@ users.forEach(async (user) => {
 export function createUsersRouter(secret) {
     const router = express.Router();
 
-    router.post("/", (req, res) => {
-        // TODO: Implement user account creation
-        res.status(501).json({ msg: "create new user not implemented" });
-    });
+    // router.post("/", (req, res) => {
+    //     try {
+    //         const user = await User.create(req.body);
+    //         res.status(201);
+    //         res.json(user);
+    //     } catch (error) {
+    //         res.status(500);
+    //         res.json({
+    //             error: "USer could not be created",
+    //             details: error.toString(),
+    //         });
+    //     }
+
+    // });
 
     router.patch("/", (req, res) => {
         // TODO: Implement user update (change password, etc).
@@ -55,7 +66,8 @@ export function createUsersRouter(secret) {
             return;
         }
 
-        const user = users.find((user) => user.username === username);
+        //const user = users.find((user) => user.username === username);
+        const user = User.findOne({ username: username })
         if (user) {
             // If the user is found
             if (bcrypt.compareSync(password, user.hash)) {
