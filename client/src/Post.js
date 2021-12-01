@@ -21,7 +21,7 @@ function Post(props) {
 
     }
 
-    console.log(post);
+    //console.log(post);
     if (!post) {
         return <p>Loading...</p>
     }

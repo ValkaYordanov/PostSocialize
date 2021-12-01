@@ -66,7 +66,7 @@ postRoutes.put('/addComment/:id', async (req, res) => {
         $push: { comments: req.body }
       },
       {
-        retunDocument: 'after'
+        returnDocument: 'after'
       }
 
     );

@@ -8,6 +8,7 @@ function Registration(props) {
 
     function onSubmit() {
         createUser(username, password);
+        console.log(username, password);
     }
 
     return (

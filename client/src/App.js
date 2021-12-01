@@ -13,8 +13,7 @@ import Registration from "./Registration";
 
 const API_URL = process.env.REACT_APP_API;
 export default function App() {
-  const [posts, setPosts] = useState([
-  ]);
+  const [posts, setPosts] = useState([]);
 
   // useEffect(() => {
   //   fetch(`${API_URL}/allPosts`)
@@ -110,48 +109,63 @@ export default function App() {
     }
   }
 
-  function addLike(postId) {
+  async function addLike(postId) {
     const post = posts.find((post) => post._id === postId);
     var index = posts.findIndex((post) => post._id === postId);
-    console.log({ ...post, likes: post.likes + 1 });
-    fetch(`${API_URL}/allPosts/addLike/${postId}`, {
-      // PUT instead of POST because we overwrite the whole bin with a new version
-      // https://jsonbin.io/api-reference/v3/bins/update
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // Simple version where we overwrite the entire "database" store with a new list
-      body: JSON.stringify({ ...post, likes: post.likes + 1 }),
-    })
-      .then((response) => response.json())
-      .then(data => setPosts([...posts.slice(0, index), data, ...posts.slice(index + 1)]));
+    // console.log({ ...post, likes: post.likes + 1 });
+    const updatedPost = await apiService.put(`/allPosts/addLike/${postId}`,
+
+      { ...post, likes: post.likes + 1 },
+    )
+
+    setPosts([...posts.slice(0, index), updatedPost, ...posts.slice(index + 1)]);
   }
+
+  //   fetch(`${API_URL}/allPosts/addLike/${postId}`, {
+  //     // PUT instead of POST because we overwrite the whole bin with a new version
+  //     // https://jsonbin.io/api-reference/v3/bins/update
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     // Simple version where we overwrite the entire "database" store with a new list
+  //     body: JSON.stringify({ ...post, likes: post.likes + 1 }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then(data => setPosts([...posts.slice(0, index), data, ...posts.slice(index + 1)]));
+  // }
 
   async function addComment(postId, comment, user, setErrorMessage) {
     if (user !== "" && comment !== "" && comment.length >= 2) {
       setErrorMessage("")
 
 
-      //const post = posts.find((post) => post._id === postId);
-      //var index = posts.findIndex((post) => post._id === postId);
+      const post = await posts.find((post) => post._id === postId);
+      var index = posts.findIndex((post) => post._id === postId);
       //var newComment = { _id: (Math.random() * 999).toString(), userName, content };
       const newComment = { userName: user, content: comment };
 
-      fetch(`${API_URL}/allPosts/addComment/${postId}`, {
-        // PUT instead of POST because we overwrite the whole bin with a new version
-        // https://jsonbin.io/api-reference/v3/bins/update
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // Simple version where we overwrite the entire "database" store with a new list
-        //body: JSON.stringify({ ...post, comments: [...post.comments, newComment] }),
-        body: JSON.stringify(newComment)
-      })
-      fetch(`${API_URL}/allPosts`)
-        .then((response) => response.json())
-        .then((data) => setPosts(data));
+      const data = await apiService.put(`/allPosts/addComment/${postId}`,
+
+        newComment,
+      )
+
+      setPosts([...posts.slice(0, index), data, ...posts.slice(index + 1)]);
+
+      // fetch(`${API_URL}/allPosts/addComment/${postId}`, {
+      //   // PUT instead of POST because we overwrite the whole bin with a new version
+      //   // https://jsonbin.io/api-reference/v3/bins/update
+      //   method: "PUT",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   // Simple version where we overwrite the entire "database" store with a new list
+      //   //body: JSON.stringify({ ...post, comments: [...post.comments, newComment] }),
+      //   body: JSON.stringify(newComment)
+      // })
+      // fetch(`${API_URL}/allPosts`)
+      //   .then((response) => response.json())
+      //   .then((data) => setPosts(data));
       // .then(response => response.json())
       // .then(data => setPosts([...posts.slice(0, index), data, ...posts.slice(index + 1)]))
       // .catch(error => console.error(error))
@@ -160,7 +174,8 @@ export default function App() {
       setErrorMessage("The Content and the Author name are required! The content needs to be at least 2 characters!")
     }
   }
-  let contents = <p>No kittens!</p>;
+
+  let contents = <p>No Posts!</p>;
   if (posts.length > 0) {
     contents = (
       <Router>

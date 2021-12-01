@@ -55,7 +55,7 @@ function createServer() {
     // Open all GET requests on the form "/api/questions/*" using a regular expression
     { url: /\/api\/questions\.*/gim, methods: ["GET"] },
     { url: /\/api\/allPosts\.*/gim, methods: ["GET"] },
-    { url: /\/api\/registration\.*/gim, methods: ["POST"] },
+    { url: /\/api\/users\/registration\.*/gim, methods: ["POST"] },
   ];
   const secret = process.env.SECRET || "the cake is a lie";
   app.use(

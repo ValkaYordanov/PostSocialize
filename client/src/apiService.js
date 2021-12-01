@@ -12,7 +12,8 @@ class ApiService {
     }
 
     createUser(username, password) {
-        const response = this.post("/registration", {
+        console.log(username, password)
+        const response = this.post("/users/registration", {
             username,
             password,
         });
@@ -21,6 +22,7 @@ class ApiService {
     }
 
     async login(username, password) {
+        console.log(username, password)
         const response = await this.post("/users/authenticate", {
             username,
             password,
@@ -90,6 +92,17 @@ class ApiService {
             method: "POST",
             body: body ? JSON.stringify(body) : null,
         });
+    }
+
+    put(path, body) {
+        return this.makeRequest(path, {
+            method: "PUT",
+            body: body ? JSON.stringify(body) : null,
+        });
+    }
+
+    delete(path) {
+        return this.makeRequest(path, { method: "DELETE" });
     }
 }
 

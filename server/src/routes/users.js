@@ -29,15 +29,34 @@ users.forEach(async (user) => {
     console.log(`Hash generated for ${user.username}:`, user); // Logging for debugging purposes
 });
 
+async function hashPass(rawPass) {
+    return new Promise((resolve, reject) => {
+        bcrypt.hash(rawPass, 10, function (err, hash) {
+            if (err) reject(err);
+            else resolve(hash);
+        });
+    });
+}
+
+
 // Create the routes and export the router
 export function createUsersRouter(secret) {
     const router = express.Router();
 
-    router.post("/registration", (req, res) => {
+    router.post("/registration", async (req, res) => {
         try {
-            const user = User.create(req.body);
+            const pass = await hashPass(req.body.password);
+            const user = await User.create({ username: req.body.username, password: pass });
+            const payload = { username: user.username };
+            const token = jwt.sign(payload, secret, {
+                algorithm: "HS512",
+                expiresIn: "1h",
+            });
             res.status(201);
-            res.json(user);
+            res.json({
+                msg: `User '${user.username}' was created `,
+                token: token,
+            });
         } catch (error) {
             res.status(500);
             res.json({
@@ -55,7 +74,7 @@ export function createUsersRouter(secret) {
 
     // This route takes a username and a password and creates an auth token
     // POST /api/users/authenticate
-    router.post("/authenticate", (req, res) => {
+    router.post("/authenticate", async (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
 
@@ -65,12 +84,12 @@ export function createUsersRouter(secret) {
             res.status(401).json({ msg: msg });
             return;
         }
-
         //const user = users.find((user) => user.username === username);
-        const user = User.findOne({ username: username })
+        const user = await User.findOne({ username: username });
+
         if (user) {
             // If the user is found
-            if (bcrypt.compareSync(password, user.hash)) {
+            if (bcrypt.compareSync(password, user.password)) {
                 const payload = { username: username };
                 const token = jwt.sign(payload, secret, {
                     algorithm: "HS512",
