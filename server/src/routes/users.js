@@ -33,20 +33,20 @@ users.forEach(async (user) => {
 export function createUsersRouter(secret) {
     const router = express.Router();
 
-    // router.post("/", (req, res) => {
-    //     try {
-    //         const user = await User.create(req.body);
-    //         res.status(201);
-    //         res.json(user);
-    //     } catch (error) {
-    //         res.status(500);
-    //         res.json({
-    //             error: "USer could not be created",
-    //             details: error.toString(),
-    //         });
-    //     }
+    router.post("/registration", (req, res) => {
+        try {
+            const user = User.create(req.body);
+            res.status(201);
+            res.json(user);
+        } catch (error) {
+            res.status(500);
+            res.json({
+                error: "USer could not be created",
+                details: error.toString(),
+            });
+        }
 
-    // });
+    });
 
     router.patch("/", (req, res) => {
         // TODO: Implement user update (change password, etc).

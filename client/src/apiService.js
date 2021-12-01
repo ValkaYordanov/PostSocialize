@@ -11,6 +11,15 @@ class ApiService {
         this.api_url = api_url;
     }
 
+    createUser(username, password) {
+        const response = this.post("/registration", {
+            username,
+            password,
+        });
+        this.setToken(response.token);
+        console.log(response);
+    }
+
     async login(username, password) {
         const response = await this.post("/users/authenticate", {
             username,

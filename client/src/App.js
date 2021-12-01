@@ -9,6 +9,7 @@ import apiService from "./apiService";
 
 import Login from "./Login";
 import Logout from "./Logout";
+import Registration from "./Registration";
 
 const API_URL = process.env.REACT_APP_API;
 export default function App() {
@@ -50,6 +51,16 @@ export default function App() {
     }
   }
 
+
+  function createUser(username, password) {
+    try {
+      apiService.createUser(username, password);
+      // Fetch data again after logging in
+      // window.location.reload();
+    } catch (error) {
+      console.error("Logout", error);
+    }
+  }
 
   // Login using API
   async function login(username, password) {
@@ -160,6 +171,9 @@ export default function App() {
       </Router>
     );
   }
+
+  let regPart = <Registration createUser={createUser}></Registration>;
+
   let loginPart = <Login login={login}></Login>;
   if (apiService.loggedIn()) {
     loginPart = <Logout logout={logout}></Logout>;
@@ -167,6 +181,7 @@ export default function App() {
   }
   return (
     <>
+      {regPart}
       {loginPart}
       {contents}
 
