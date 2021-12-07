@@ -79,7 +79,7 @@ export default function App() {
 
       // console.log(content, owner, authorName)
       const newPost = {
-        id: (Math.random() * 999).toString(),
+        //id: (Math.random() * 999).toString(),
         content: content,
         owner: owner,
         authorName: authorName,
