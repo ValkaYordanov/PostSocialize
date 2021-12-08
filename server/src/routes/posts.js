@@ -57,6 +57,7 @@ postRoutes.put('/addLike/:id', async (req, res) => {
 });
 
 //lifting state up to the parrent for adding comment and update the page
+///addComment/?id=:id
 
 
 postRoutes.put('/addComment/:id', async (req, res) => {
@@ -64,6 +65,7 @@ postRoutes.put('/addComment/:id', async (req, res) => {
     const post = await Post.findByIdAndUpdate({ _id: req.params.id },
       {
         $push: { comments: req.body }
+        //req.user.id
       },
       {
         retunDocument: 'after'
