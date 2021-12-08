@@ -42,7 +42,7 @@ function createServer() {
    * which allows the React SPA's client side navigation library to handle full
    * page refreshes */
   // app.get("*", (req, res) =>
-  //   res.sendFile(path.resolve("..", "client", "public", "index.html"))
+  //   res.sendFile(path.resolve("..", "client", "build", "index.html"))
   // );
 
   const openPaths = [

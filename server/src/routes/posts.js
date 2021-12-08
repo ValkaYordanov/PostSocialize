@@ -63,6 +63,7 @@ postRoutes.put('/addComment/:id', async (req, res) => {
   try {
     const post = await Post.findByIdAndUpdate({ _id: req.params.id },
       {
+        // $push: { comments: { ...req.body, username: req.user.username } }
         $push: { comments: req.body }
       },
       {

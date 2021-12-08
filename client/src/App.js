@@ -10,6 +10,7 @@ import apiService from "./apiService";
 import Login from "./Login";
 import Logout from "./Logout";
 import Registration from "./Registration";
+import jwt_decode from "jwt-decode";
 
 const API_URL = process.env.REACT_APP_API;
 export default function App() {
@@ -191,7 +192,11 @@ export default function App() {
 
   let loginPart = <Login login={login}></Login>;
   if (apiService.loggedIn()) {
-    loginPart = <Logout logout={logout}></Logout>;
+    var decoded = jwt_decode(localStorage.getItem("token"));
+
+    loginPart = <div>
+      <p>Welcome, {decoded.username}</p>
+      <Logout logout={logout}></Logout></div>;
 
   }
   return (
