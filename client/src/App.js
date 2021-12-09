@@ -189,13 +189,17 @@ export default function App() {
   }
 
   let regPart = <Registration createUser={createUser}></Registration>;
+  if (apiService.loggedIn()) {
+    var decoded = jwt_decode(localStorage.getItem("token"));
+    regPart = <p>Welcome, {decoded.username}</p>
+  }
 
   let loginPart = <Login login={login}></Login>;
   if (apiService.loggedIn()) {
-    var decoded = jwt_decode(localStorage.getItem("token"));
+
 
     loginPart = <div>
-      <p>Welcome, {decoded.username}</p>
+
       <Logout logout={logout}></Logout></div>;
 
   }

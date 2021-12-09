@@ -2,6 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "../models/user.js";
+import Post from "../models/post.js";
 
 // I recommend that you store your users in MongoDB using Mongoose instead of this.
 const users = [
@@ -71,7 +72,8 @@ export function createUsersRouter(secret) {
         // TODO: Implement user update (change password, etc).
         res.status(501).json({ msg: "update user not implemented" });
     });
-
+    /// /post?userId=id
+    // /user/:id/posts
     // This route takes a username and a password and creates an auth token
     // POST /api/users/authenticate
     router.post("/authenticate", async (req, res) => {
@@ -87,6 +89,7 @@ export function createUsersRouter(secret) {
         //const user = users.find((user) => user.username === username);
         const user = await User.findOne({ username: username });
 
+        const post = await Post.find({ userId: req.user.userId })
         if (user) {
             // If the user is found
             if (bcrypt.compareSync(password, user.password)) {
